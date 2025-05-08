@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>5G NR Latency Simulator</title>
+</head>
+<body>
+    <h1>Simulator de Latență 5G NR</h1>
+    <form method="post">
+        <label>Numerologie (μ): <input type="number" name="numerologie" min="0" max="4" required></label><br>
+        <label>Tip slot:
+            <select name="tip_slot">
+                <option value="slot">Slot</option>
+                <option value="mini-slot">Mini-slot</option>
+            </select>
+        </label><br>
+        <label>Nr. simboluri mini-slot: <input type="number" name="n_symbs_mini_slot" min="2" max="14"></label><br>
+        <label>k_sloturi: <input type="number" name="k_sloturi" value="1"></label><br>
+        <label>Tip ordonare:
+            <select name="tip_ordonare">
+                <option value="RR">Round Robin</option>
+                <option value="BestCQI">Best CQI</option>
+                <option value="PF">Proportional Fair</option>
+                <option value="WFQ">Weighted Fair Queueing</option>
+                <option value="Slice">Slicing</option>
+            </select>
+        </label><br>
+        <label>Ordonare dinamică:
+            <select name="ordonare_dinamica">
+                <option value="True">Da</option>
+                <option value="False">Nu</option>
+            </select>
+        </label><br>
+        <label>T_sr (ms): <input type="number" step="any" name="T_sr" value="4"></label><br>
+        <label>T_grant (ms): <input type="number" step="any" name="T_grant" value="3"></label><br>
+        <label>n_bits: <input type="number" name="n_bits" value="1000"></label><br>
+        <label>Modulation Order:
+            <select name="modulation_order">
+                <option value="2">QPSK</option>
+                <option value="4">16QAM</option>
+                <option value="6">64QAM</option>
+                <option value="8">256QAM</option>
+            </select>
+        </label><br>
+        <label>Overhead: <input type="number" step="any" name="overhead" value="0.2"></label><br>
+        <label>Processing Delay (ms): <input type="number" step="any" name="processing_delay" value="0.2"></label><br>
+        <label>Nr. retransmisii: <input type="number" name="n_retransmisii" value="0"></label><br>
+        <label>Feedback Delay (ms): <input type="number" step="any" name="feedback_delay" value="4"></label><br>
+        <label>Retransmission Delay (ms): <input type="number" step="any" name="retransmission_delay" value="8"></label><br>
+        <label>Distanță (m): <input type="number" name="distanta" value="0"></label><br>
+        <input type="submit" value="Calculează latența totală">
+    </form>
+
+    {% if result %}
+        <h2>Rezultate simulare:</h2>
+        <ul>
+        {% for key, value in result.items() %}
+            <li><strong>{{ key }}:</strong> {{ value }} ms</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
