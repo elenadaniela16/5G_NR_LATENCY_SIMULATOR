@@ -1,0 +1,75 @@
+<!-- templates/results.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Simulation Results</title>
+  <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>
+</head>
+<body>
+<div class="container">
+  <h1 class="mt-4">Simulation Results</h1>
+
+  <h3>Summary</h3>
+  <ul>
+    <li>Total packets processed: {{ summary.total }}</li>
+    <li>Delivered on first try: {{ summary.first }} ({{ '%.1f'|format(summary.first_pct) }}%)</li>
+    <li>Retransmitted: {{ summary.retrans }} ({{ '%.1f'|format(summary.retrans_pct) }}%)</li>
+  </ul>
+
+  <h3 class="mt-4">Latency Statistics (ms)</h3>
+  <div class="table-responsive">
+    {{ stats_table|safe }}
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-6">
+      <h4>Latency Histogram</h4>
+      <img src="{{ hist_url }}" class="img-fluid"/>
+    </div>
+    <div class="col-md-6">
+      <h4>Latency over Slots</h4>
+      <img src="{{ scatter_url }}" class="img-fluid"/>
+    </div>
+  </div>
+
+  <a href="{{ url_for('index') }}" class="btn btn-secondary mt-4">Run Again</a>
+</div>
+<!-- templates/results.html (după grafice) -->
+
+<h3 class="mt-5">Delivered Packets Detail</h3>
+<div class="table-responsive" style="max-height:400px; overflow:auto;">
+  <table class="table table-bordered table-sm">
+    <thead class="thead-light">
+      <tr>
+        <th>UE</th><th>Slot</th><th>Latency (ms)</th>
+        <th>Dist (m)</th><th>PL (dB)</th><th>SINR (dB)</th><th>CQI</th>
+        <th>MCS</th><th>Qm</th><th>CodeRate</th>
+        <th>PRB</th><th>TBS (bits)</th><th>1st_TX?</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for e in logs %}
+      <tr>
+        <td>{{ e.ue }}</td>
+        <td>{{ e.slot }}</td>
+        <td>{{ e.latency_ms }}</td>
+        <td>{{ e.distance_m }}</td>
+        <td>{{ e.pathloss_db }}</td>
+        <td>{{ e.sinr_db }}</td>
+        <td>{{ e.cqi }}</td>
+        <td>{{ e.mcs_idx }}</td>
+        <td>{{ e.Qm }}</td>
+        <td>{{ '%.2f'|format(e.code_rate) }}</td>
+        <td>{{ e.n_prbs }}</td>
+        <td>{{ e.tbs_bits }}</td>
+        <td>{{ 'Yes' if e.first_tx else 'No' }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>
